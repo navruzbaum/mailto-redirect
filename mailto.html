@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+    <head>
+        <title>HTTPS to MAILTO</title>
+    </head>
+    <body>
+        <script>
+            // Based on https://stackoverflow.com/a/901144/1652620
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+
+            var to = getParameterByName('to');
+            var cc = getParameterByName('cc');
+            var bcc = getParameterByName('bcc');
+            var subject = getParameterByName('subject');
+            var body = getParameterByName('body');
+
+            if (to != "" && to != null) {
+                window.location = "mailto://+" + to + ";?&cc=" + cc + ";?&bcc=" + bcc + ";?&subject=" + subject + ";?&body=" + body;
+            }
+        </script>
+    </body>
+</html>
